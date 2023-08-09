@@ -13,7 +13,7 @@ local type = type
 local table = table
 local pairs = pairs
 
-local print = print
+--local print = print
 
 
 -- Create the module table here
@@ -208,7 +208,7 @@ function new(port,browser,options)
 	local capabilities = json.encode({
 		capabilities = capabilities
 	})
-	print(capabilities)
+	--print(capabilities)
 	local server_url = "http://127.0.0.1:"..port
 	local response_table = postRequest(server_url .. "/session",capabilities)
 
