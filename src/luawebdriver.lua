@@ -13,7 +13,7 @@ local type = type
 local table = table
 local pairs = pairs
 
---local print = print
+local print = print
 
 
 -- Create the module table here
@@ -25,7 +25,7 @@ else
 	_ENV = M		-- Lua 5.2+
 end
 
-_VERSION = "1.23.04.22"
+_VERSION = "1.23.08.09"
 
 local function postRequest(endpoint,jsonBody)
 	local response_body = {}
@@ -193,15 +193,22 @@ meta = {
 }
 
 -- Connect to the driver and returns the connection object as a new session
-function new(port,browser)
+function new(port,browser,options)
 	local conn = {}
 	setmetatable(conn,meta)
+	local capabilities = {
+		browserName = browser
+	}
+	if type(options) == "table" then
+		for k,v in pairs(options) do
+			capabilities[k] = v
+		end
+	end
 	-- Encode the capabilities as a JSON string
 	local capabilities = json.encode({
-		capabilities = {
-			browserName = browser
-		}
+		capabilities = capabilities
 	})
+	print(capabilities)
 	local server_url = "http://127.0.0.1:"..port
 	local response_table = postRequest(server_url .. "/session",capabilities)
 
