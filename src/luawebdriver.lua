@@ -25,7 +25,7 @@ else
 	_ENV = M		-- Lua 5.2+
 end
 
-_VERSION = "1.23.08.09"
+_VERSION = "1.23.08.10"
 
 local function postRequest(endpoint,jsonBody)
 	local response_body = {}
@@ -43,7 +43,7 @@ local function postRequest(endpoint,jsonBody)
 	--print(status_code,headers,status_line)
 	-- Check the status code for errors
 	if status_code ~= 200 then
-		return nil,"Request failed: " .. status_line
+		return nil,"Request failed: " .. (status_line or "").." Code: "..(status_code or "")
 	end
 
 	-- Decode the response body from JSON to a Lua table
@@ -210,8 +210,10 @@ function new(port,browser,options)
 	})
 	--print(capabilities)
 	local server_url = "http://127.0.0.1:"..port
-	local response_table = postRequest(server_url .. "/session",capabilities)
-
+	local response_table,msg = postRequest(server_url .. "/session",capabilities)
+	if not response_table then
+		return nil,msg
+	end
 	-- Extract the session ID from the response table
 	conn.sessionId = response_table.value.sessionId	
 	conn.port = port
