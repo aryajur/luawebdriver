@@ -25,7 +25,7 @@ else
 	_ENV = M		-- Lua 5.2+
 end
 
-_VERSION = "1.23.08.10"
+_VERSION = "1.24.01.30"
 
 local function postRequest(endpoint,jsonBody)
 	local response_body = {}
@@ -61,7 +61,7 @@ local function request(endpoint,method)
 
 	-- Check the status code for errors
 	if status_code ~= 200 then
-		return nil,"Request failed: " .. status_line
+		return nil,"Request failed: " .. (status_line or "")
 	end
 
 	-- Decode the response body from JSON to a Lua table
